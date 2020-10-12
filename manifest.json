@@ -74,5 +74,17 @@
     },
     "uniStatistics" : {
         "enable" : false
+    },
+    "h5" : {
+        "template" : "index.html",
+        "title" : "最热分享",
+        "router" : {
+            "mode" : "hash"
+        },
+        "optimization" : {
+            "treeShaking" : {
+                "enable" : true
+            }
+        }
     }
 }

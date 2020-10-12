@@ -1,0 +1,78 @@
+{
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/share/share",
+			"style": {
+				"navigationBarTitleText": "分享"
+			}
+		},
+		{
+			"path": "pages/share/fieryShare",
+			"style": {
+				"navigationBarTitleText": "热门分享"
+			}
+		},
+		{
+			"path": "pages/share/shareDetail",
+			"style": {
+				"navigationBarTitleText": "分享详情"
+			}
+		},
+		{
+			"path": "pages/liveSense/liveSense",
+			"style": {
+				"navigationBarTitleText": "生活常识"
+			}
+		},
+		{
+			"path": "pages/liveSense/liveSenseDetail",
+			"style": {
+				"navigationBarTitleText": "常识详情"
+			}
+		},
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/user/userHome",
+			"style": {
+				"navigationBarTitleText": "我的主页"
+			}
+		},
+		{
+			"path": "pages/user/userShare",
+			"style": {
+				"navigationBarTitleText": "我的分享"
+			}
+		},
+		{
+			"path": "pages/user/userDeal",
+			"style": {
+				"navigationBarTitleText": "用户协议"
+			}
+		},
+		{
+			"path": "pages/aboutUs/aboutUs",
+			"style": {
+				"navigationBarTitleText": "关于我们"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "最热分享",
+		"navigationBarBackgroundColor": "#0094FF",
+		"backgroundColor": "#0094FF"
+	}
+}

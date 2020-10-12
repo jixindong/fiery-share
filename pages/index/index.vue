@@ -25,7 +25,7 @@
 							<text class="text-truncate">{{ item.userName }}</text>
 						</view>
 						<view class="readMsg">
-							<image src="../../static/images/rose.png" mode="widthFix"></image>
+							<image src="../../static/images/icon-fire.png" mode="widthFix"></image>
 							<text>{{ item.num }}</text>
 							<text>万人围观</text>
 						</view>
@@ -42,24 +42,39 @@
 			</view>
 
 			<view class="item" v-for="(item, index) in newShareList" :key="index">
-				<view class="userMsg">
+				<navigator url="../user/userHome" class="userMsg">
 					<image :src="item.userAvatar"></image>
 					<view>
 						<view class="userName">{{ item.userName }}</view>
 						<view>{{ item.createTime }}</view>
 					</view>
-				</view>
+				</navigator>
 				<navigator url="../liveSense/liveSense" class="classify">#生活小常识#</navigator>
-				<view class="title">{{ item.title }}</view>
-				<view class="accessory">
-					<image src="../../static/images/rose.png" mode="widthFix"></image>
-					<text>{{ item.accessoryName }}.{{ item.accessoryType }}</text>
-				</view>
-				<view class="readMsg">
-					<image src="../../static/images/rose.png" mode="widthFix"></image>
-					<text>{{ item.num }}万人围观</text>
-				</view>
+				<navigator url="../share/shareDetail" class="content">
+					<view class="title">{{ item.title }}</view>
+					<view class="accessory">
+						<image src="../../static/images/icon-pdf.png" mode="widthFix"></image>
+						<text>{{ item.accessoryName }}.{{ item.accessoryType }}</text>
+					</view>
+					<view class="readMsg">
+						<image src="../../static/images/icon-fire.png" mode="widthFix"></image>
+						<text>{{ item.num }}万人围观</text>
+					</view>
+				</navigator>
 			</view>
+		</view>
+
+		<!-- 导航栏 -->
+		<view class="tabBar">
+			<view class="item active">
+				<image src="../../static/images/icon-home-active.png" mode="widthFix"></image>
+				<text>首页</text>
+			</view>
+			<navigator url="../share/share" class="item share"><image src="../../static/images/icon-plus.png"></image></navigator>
+			<navigator url="../user/user" class="item">
+				<image src="../../static/images/icon-user.png" mode="widthFix"></image>
+				<text>我的</text>
+			</navigator>
 		</view>
 	</view>
 </template>
@@ -70,12 +85,12 @@ export default {
 	data() {
 		return {
 			// banner
-			bannerList: ['https://s1.ax1x.com/2020/10/11/0cObr9.jpg', 'https://s1.ax1x.com/2020/10/11/0cObr9.jpg'],
+			bannerList: ['https://s1.ax1x.com/2020/10/12/021ymF.png', 'https://s1.ax1x.com/2020/10/12/021ymF.png'],
 			// 最热分享
 			fieryShareList: [
 				{
 					id: 1,
-					poster: 'https://s1.ax1x.com/2020/10/11/0cxdsg.jpg',
+					poster: 'https://s1.ax1x.com/2020/10/12/023Tg0.jpg',
 					title: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
 					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxpxU.jpg',
 					userName: '法外狂徒张三',
@@ -83,7 +98,7 @@ export default {
 				},
 				{
 					id: 2,
-					poster: 'https://s1.ax1x.com/2020/10/11/0cxdsg.jpg',
+					poster: 'https://s1.ax1x.com/2020/10/12/023Tg0.jpg',
 					title: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
 					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxpxU.jpg',
 					userName: '爱美妆的木子萌爱美妆的木子萌',
@@ -91,7 +106,7 @@ export default {
 				},
 				{
 					id: 3,
-					poster: 'https://s1.ax1x.com/2020/10/11/0cxdsg.jpg',
+					poster: 'https://s1.ax1x.com/2020/10/12/023Tg0.jpg',
 					title: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
 					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxpxU.jpg',
 					userName: '法外狂徒张三',
@@ -175,22 +190,22 @@ export default {
 
 <style lang="scss" scoped>
 .index {
-	padding-bottom: 20rpx;
+	padding-bottom: 160rpx;
 	min-height: 100vh;
-	background-color: #f9f9f9;
+	background-color: #fafafa;
 	/* banner */
 	.banner {
-		width: 100%;
-		height: 400rpx;
+		width: 750rpx;
+		height: 352rpx;
 		image {
-			width: 100%;
+			width: 750rpx;
 		}
 	}
 	/* 热门分享 */
 	.fieryShare {
 		margin: 40rpx auto;
 		padding: 20rpx 0 0 20rpx;
-		width: 740rpx;
+		width: 690rpx;
 		background-color: #fff;
 		border-radius: 10rpx;
 		.hd {
@@ -217,17 +232,20 @@ export default {
 			white-space: nowrap;
 			.item {
 				display: inline-block;
-				margin: 20rpx 20rpx 20rpx 4rpx;
-				width: 520rpx;
+				margin: 30rpx 26rpx 30rpx 4rpx;
+				width: 480rpx;
 				overflow: hidden;
 				border-radius: 20rpx;
 				box-shadow: 0 0 10rpx rgba(0, 0, 0, 0.2);
 				> image {
 					width: 100%;
+					height: 320rpx;
 				}
 				.title {
 					padding: 20rpx;
 					min-height: 150rpx;
+					color: #333;
+					font-size: 28rpx;
 					white-space: normal;
 				}
 				.msg {
@@ -241,8 +259,8 @@ export default {
 						align-items: center;
 						image {
 							margin-right: 10rpx;
-							width: 40rpx;
-							height: 40rpx;
+							width: 28rpx;
+							height: 28rpx;
 							border-radius: 50%;
 						}
 						text {
@@ -254,7 +272,7 @@ export default {
 						align-items: center;
 						image {
 							margin-right: 6rpx;
-							width: 30rpx;
+							width: 16rpx;
 						}
 					}
 				}
@@ -266,7 +284,7 @@ export default {
 		> .title {
 			display: flex;
 			align-items: center;
-			padding: 20rpx;
+			padding: 30rpx;
 			color: #333;
 			font-size: 32rpx;
 			background-color: #fff;
@@ -279,50 +297,57 @@ export default {
 		}
 		.item {
 			margin-bottom: 20rpx;
-			padding: 20rpx;
 			background-color: #fff;
+			box-shadow: 0 2rpx 4rpx rgba(0,0,0,.1);
 			.userMsg {
 				display: flex;
 				align-items: center;
-				padding: 0 0 20rpx 20rpx;
+				padding: 40rpx 0 20rpx 40rpx;
 				color: #999;
 				font-size: 20rpx;
 				image {
 					margin-right: 20rpx;
-					width: 100rpx;
-					height: 100rpx;
+					width: 90rpx;
+					height: 90rpx;
 					border-radius: 50%;
 				}
 				.userName {
+					margin-bottom: 10rpx;
 					color: #333;
-					font-size: 32rpx;
+					font-size: 28rpx;
 					font-weight: 600;
 				}
 			}
 			.classify {
 				display: inline-block;
+				margin-left: 40rpx;
 				color: #0094ff;
+				font-size: 28rpx;
 			}
-			.title {
-				padding: 20rpx;
-			}
-			.accessory {
-				display: flex;
-				align-items: center;
-				margin: 10rpx 0;
-				image {
-					margin-right: 10rpx;
-					width: 40rpx;
+			.content {
+				padding-left: 40rpx;
+				.title {
+					padding-top: 20rpx;
 				}
-			}
-			.readMsg {
-				display: flex;
-				align-items: center;
-				color: #999;
-				font-size: 26rpx;
-				image {
-					margin-right: 6rpx;
-					width: 40rpx;
+				.accessory {
+					display: flex;
+					align-items: center;
+					margin: 20rpx 0;
+					image {
+						margin-right: 12rpx;
+						width: 28rpx;
+					}
+				}
+				.readMsg {
+					display: flex;
+					align-items: center;
+					padding-bottom: 20rpx;
+					color: #999;
+					font-size: 24rpx;
+					image {
+						margin-right: 8rpx;
+						width: 22rpx;
+					}
 				}
 			}
 		}

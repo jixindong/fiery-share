@@ -1,2 +1,44 @@
 /* ======================== Default Style ======================== */
+image,
+view {
+	box-sizing: border-box;
+}
 /* ======================== Defined Style ======================== */
+// 导航栏
+.tabBar {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	justify-content: space-around;
+	width: 750rpx;
+	height: 140rpx;
+	background-color: #fff;
+	box-shadow: 0 6rpx 12rpx rgba(0, 0, 0, 0.4);
+	.item {
+		display: flex;
+		flex-flow: column nowrap;
+		align-items: center;
+		padding-top: 10rpx;
+		color: #666;
+		font-size: 18rpx;
+		&.active {
+			color: #348bf6;
+		}
+		&.share {
+			position: relative;
+			top: -40rpx;
+			image {
+				width: 108rpx;
+				height: 108rpx;
+				background-color: #fff;
+				border: 8rpx solid #fff;
+				border-radius: 50%;
+			}
+		}
+		image {
+			margin-bottom: 6rpx;
+			width: 52rpx;
+		}
+	}
+}

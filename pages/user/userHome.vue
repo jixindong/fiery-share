@@ -8,17 +8,17 @@
 				<text>爱美妆的木子萌</text>
 			</view>
 		</view>
-		
+
 		<!-- 分享列表 -->
 		<view class="shareList">
 			<view class="item" v-for="(item, index) in userShareList" :key="index">
-				<navigator url="../user/userHome" class="userMsg">
+				<view class="userMsg">
 					<image :src="item.userAvatar"></image>
 					<view>
 						<view class="userName">{{ item.userName }}</view>
 						<view>{{ item.createTime }}</view>
 					</view>
-				</navigator>
+				</view>
 				<navigator url="../liveSense/liveSense" class="classify">#生活小常识#</navigator>
 				<navigator url="../share/shareDetail" class="content">
 					<view class="title">{{ item.title }}</view>
@@ -42,7 +42,7 @@ export default {
 	data() {
 		return {
 			// 用户分享列表
-			userShareList:[
+			userShareList: [
 				{
 					id: 1,
 					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxdsg.jpg',
@@ -82,19 +82,19 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.userHome{
+<style lang="scss" scoped>
+.userHome {
 	/* 用户信息 */
-	> .userMsg{
+	> .userMsg {
 		position: relative;
 		height: 580rpx;
 		overflow: hidden;
-		.avatarBgi{
+		.avatarBgi {
 			width: 750rpx;
 			filter: blur(6rpx);
 			transform: translateY(-84rpx);
 		}
-		.msg{
+		.msg {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -106,8 +106,8 @@ export default {
 			height: 580rpx;
 			color: #fff;
 			font-size: 24rpx;
-			background-color: rgba(0,0,0,.5);
-			.avatar{
+			background-color: rgba(0, 0, 0, 0.5);
+			.avatar {
 				margin-bottom: 30rpx;
 				width: 240rpx;
 				height: 240rpx;
@@ -118,14 +118,14 @@ export default {
 		}
 	}
 	/* 分享列表 */
-	.shareList{
+	.shareList {
 		position: relative;
 		top: -30rpx;
 		padding-top: 20rpx;
 		background-color: #fff;
 		border-radius: 20rpx 20rpx 0 0;
 		.item {
-			&:nth-last-child(1) .across{
+			&:nth-last-child(1) .across {
 				display: none;
 			}
 			.userMsg {
@@ -179,7 +179,7 @@ export default {
 					}
 				}
 			}
-			.across{
+			.across {
 				margin: 0 auto;
 				width: 670rpx;
 				height: 4rpx;

@@ -12,7 +12,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<!-- 功能列表 -->
 		<view class="functionList">
 			<navigator url="./userShare" class="item">
@@ -31,16 +31,14 @@
 				<image src="../../static/images/icon-arrow-right.png" mode="widthFix" class="arrow"></image>
 			</navigator>
 		</view>
-		
+
 		<!-- 导航栏 -->
 		<view class="tabBar">
 			<navigator url="../index/index" class="item">
 				<image src="../../static/images/icon-home.png" mode="widthFix"></image>
 				<text>首页</text>
 			</navigator>
-			<navigator url="../share/share" class="item share">
-				<image src="../../static/images/icon-plus.png"></image>
-			</navigator>
+			<navigator url="../share/share" class="item share"><image src="../../static/images/icon-plus.png"></image></navigator>
 			<view class="item active">
 				<image src="../../static/images/icon-user-active.png" mode="widthFix"></image>
 				<text>我的</text>
@@ -56,9 +54,9 @@ export default {
 	},
 	methods: {
 		// 跳转用户主页
-		navigateToUserHome(){
+		navigateToUserHome() {
 			uni.navigateTo({
-				url:'./userHome'
+				url: './userHome'
 			});
 		}
 	},
@@ -66,22 +64,22 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.user{
+<style lang="scss" scoped>
+.user {
 	padding-bottom: 160rpx;
 	min-height: 100vh;
 	background-color: #fafafa;
 	/* 用户信息 */
-	.userMsg{
+	.userMsg {
 		position: relative;
 		height: 580rpx;
 		overflow: hidden;
-		.avatarBgi{
+		.avatarBgi {
 			width: 750rpx;
 			filter: blur(6rpx);
 			transform: translateY(-84rpx);
 		}
-		.msg{
+		.msg {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -93,8 +91,8 @@ export default {
 			height: 580rpx;
 			color: #fff;
 			font-size: 24rpx;
-			background-color: rgba(0,0,0,.5);
-			.avatar{
+			background-color: rgba(0, 0, 0, 0.5);
+			.avatar {
 				margin-bottom: 30rpx;
 				width: 240rpx;
 				height: 240rpx;
@@ -102,12 +100,12 @@ export default {
 				border-radius: 50%;
 				box-shadow: 0 0 4rpx #fff;
 			}
-			.shareLevel{
+			.shareLevel {
 				display: flex;
 				align-items: center;
 				margin-top: 20rpx;
-				color: #FFB830;
-				image{
+				color: #ffb830;
+				image {
 					margin-right: 10rpx;
 					width: 28rpx;
 				}
@@ -115,23 +113,23 @@ export default {
 		}
 	}
 	/* 功能列表 */
-	.functionList{
+	.functionList {
 		position: relative;
 		top: -30rpx;
 		padding-top: 50rpx;
 		background-color: #fafafa;
 		border-radius: 20rpx 20rpx 0 0;
-		.item{
+		.item {
 			display: flex;
 			align-items: center;
 			padding: 30rpx 40rpx;
 			color: #333;
 			font-size: 32rpx;
-			image{
+			image {
 				margin-right: 30rpx;
 				width: 34rpx;
 			}
-			.arrow{
+			.arrow {
 				margin-left: auto;
 				width: 12rpx;
 			}

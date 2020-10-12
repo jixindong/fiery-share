@@ -3,7 +3,30 @@ image,
 view {
 	box-sizing: border-box;
 }
+page {
+	height: 100%;
+}
 /* ======================== Defined Style ======================== */
+// 文字颜色
+.text-primary {
+	color: #409eff;
+}
+
+.text-success {
+	color: #67c23a;
+}
+
+.text-warning {
+	color: #e6a23c;
+}
+
+.text-danger {
+	color: #f56c6c;
+}
+
+.text-info {
+	color: #909399;
+}
 // 导航栏
 .tabBar {
 	position: fixed;

@@ -15,7 +15,7 @@
 	</view>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .userDeal {
 	display: flex;
 	flex-flow: column nowrap;

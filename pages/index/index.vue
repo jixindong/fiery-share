@@ -298,7 +298,7 @@ export default {
 		.item {
 			margin-bottom: 20rpx;
 			background-color: #fff;
-			box-shadow: 0 2rpx 4rpx rgba(0,0,0,.1);
+			box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
 			.userMsg {
 				display: flex;
 				align-items: center;

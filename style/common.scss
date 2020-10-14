@@ -65,3 +65,18 @@ page {
 		}
 	}
 }
+// 缺省
+.default{
+	flex: 1;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	color: #999;
+	font-size: 26rpx;
+	background-color: #fff;
+	image{
+		margin-bottom: 20rpx;
+		width: 150rpx;
+	}
+}

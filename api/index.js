@@ -1,28 +1,19 @@
 import request from '@/utils/request';
 
 // banner
-export function fetchBanner(data){
+export function fetchBanner(data) {
 	return request({
-		url:'index/banner',
-		method:'POST',
+		url: 'fx/picture',
+		method: 'POST',
 		data
 	});
 }
 
-// 热门分享
-export function fetchFieryShare(data){
+// 分享列表
+export function fetchShareList(data) {
 	return request({
-		url:'index/fieryShare',
-		method:'POST',
-		data
-	});
-}
-
-// 最新分享
-export function fetchNewShare(data){
-	return request({
-		url:'index/newShare',
-		method:'POST',
+		url: 'fx/share',
+		method: 'POST',
 		data
 	});
 }

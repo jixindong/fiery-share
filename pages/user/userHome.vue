@@ -38,46 +38,27 @@
 </template>
 
 <script>
+import * as userApi from '@/api/user';
 export default {
 	data() {
 		return {
 			// 用户分享列表
-			userShareList: [
-				{
-					id: 1,
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxdsg.jpg',
-					userName: '杜甫',
-					title: '《饮中八仙歌》',
-					accessoryName: '饮中八仙歌',
-					accessoryLink: 'https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf',
-					accessoryType: 'pdf',
-					createTime: '2020-10-09 12:30',
-					num: 66.66
-				},
-				{
-					id: 2,
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxdsg.jpg',
-					userName: '啦啦',
-					title: '《饮中八仙歌》',
-					accessoryName: '饮中八仙歌',
-					accessoryLink: 'https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf',
-					accessoryType: 'pdf',
-					createTime: '2020-10-09 12:30',
-					num: 66.66
-				},
-				{
-					id: 3,
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxdsg.jpg',
-					userName: '张三',
-					title: '《饮中八仙歌》',
-					accessoryName: '饮中八仙歌',
-					accessoryLink: 'https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf',
-					accessoryType: 'pdf',
-					createTime: '2020-10-09 12:30',
-					num: 66.66
-				}
-			]
+			userShareList: []
 		};
+	},
+	methods:{
+		// 获取用户详情
+		async fetchUserDetail(userid){
+			let res = await userApi.fetchUserDetail({userid:userid});
+			if(res.code !== 200){
+				return false;
+			}
+			
+			this.userShareList = res.data;
+		}
+	},
+	onLoad(e) {
+		this.fetchUserDetail(e.userid);// 获取用户详情
 	}
 };
 </script>

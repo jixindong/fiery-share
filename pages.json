@@ -17,7 +17,8 @@
 		{
 			"path": "pages/share/fieryShare",
 			"style": {
-				"navigationBarTitleText": "热门分享"
+				"navigationBarTitleText": "热门分享",
+				"enablePullDownRefresh":true
 			}
 		},
 		{

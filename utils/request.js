@@ -1,12 +1,15 @@
-const baseURL = 'https://www.easy-mock.com/mock/5f82c46575729f6d58a788f4/motui/';
+const baseURL = 'https://dyxcx.waszn.com/';
 const request = data => {
 	return new Promise((resolve, reject) => {
 		uni.request({
 			url: baseURL + data.url,
 			method: data.method || 'GET',
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
 			data: data.data || {},
 			success: res => {
-				resolve(res);
+				resolve(res.data);
 			},
 			fail: err => {
 				reject(err);

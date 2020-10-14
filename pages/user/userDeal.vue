@@ -1,6 +1,6 @@
 <template>
-	<view class="userDeal">
-		<image src="../../static/images/ikon-safe.png" mode="widthFix" class="banner"></image>
+	<view class="userDeal" v-html="userDeal">
+		<!-- <image src="../../static/images/ikon-safe.png" mode="widthFix" class="banner"></image>
 		<view class="content">
 			<view>
 				为了更好地为您提供服务，请您在开始使用“抖音”软件及相关服务之前，认真阅读并充分理解本协议，特别是涉及免除或者限制责任的条款、权利许可和信息使用的条款、同意开通和使用特殊单项服务的条款、法律适用和争议解决条款等。其中，免除或者限制责任条款等重要内容将以加粗形式提示您注意，您应重点阅读。
@@ -11,9 +11,34 @@
 				<text class="policy">《“抖音”隐私政策》</text>
 				）的约束。
 			</view>
-		</view>
+		</view> -->
 	</view>
 </template>
+
+<script>
+import { fetchUserDeal } from '@/api/user';
+export default {
+	data() {
+		return {
+			userDeal: null
+		};
+	},
+	methods: {
+		// 获取用户协议
+		async getUserDeal() {
+			let res = await fetchUserDeal();
+			if (res.code !== 200) {
+				return false;
+			}
+
+			this.userDeal = res.data[0].value;
+		}
+	},
+	onReady() {
+		this.getUserDeal(); // 获取用户协议
+	}
+};
+</script>
 
 <style lang="scss" scoped>
 .userDeal {

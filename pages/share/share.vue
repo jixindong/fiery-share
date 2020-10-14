@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="share">
 		<u-form :model="shareForm" ref="shareFormRef" class="shareForm">
 			<u-form-item label="分类" prop="type" :border-bottom="false">
 				<view class="type" @click="shareTypeSelectShow = true">
@@ -103,25 +103,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.shareForm {
+.share {
 	padding: 20rpx;
-	.type {
-		margin-left: auto;
-		color: #999;
-		font-size: 24rpx;
-		image {
-			margin-left: 20rpx;
-			width: 20rpx;
+	.shareForm {
+		.type {
+			margin-left: auto;
+			color: #999;
+			font-size: 24rpx;
+			image {
+				margin-left: 20rpx;
+				width: 20rpx;
+			}
 		}
-	}
-	.content {
-		margin: 40rpx 0;
-		padding: 10rpx 20rpx;
-		color: #999;
-		font-size: 24rpx;
-		background-color: #f4f4f4;
-		.limit {
-			text-align: right;
+		.content {
+			margin: 40rpx 0;
+			padding: 10rpx 20rpx;
+			color: #999;
+			font-size: 24rpx;
+			background-color: #f4f4f4;
+			.limit {
+				text-align: right;
+			}
 		}
 	}
 }

@@ -2,23 +2,23 @@
 	<view class="shareDetail">
 		<!-- 分享详情 -->
 		<view class="detail">
-			<image :src="shareDetail.poster" mode="widthFix"></image>
+			<image :src="shareDetail.img" mode="widthFix" v-if="shareDetail.img"></image>
 			<view class="title">{{ shareDetail.title }}</view>
 			<view class="d-flex justify-content-between">
 				<view class="userMsg">
-					<image :src="shareDetail.userAvatar"></image>
-					<text class="text-truncate">{{ shareDetail.userName }}</text>
+					<image :src="shareDetail.member.avatarurl"></image>
+					<text class="text-truncate">{{ shareDetail.member.nickname }}</text>
 				</view>
 				<view class="readMsg">
 					<image src="../../static/images/icon-fire.png" mode="widthFix"></image>
-					<text>{{ shareDetail.num }}</text>
+					<text>{{ shareDetail.num | readerNum }}</text>
 					<text>万人围观</text>
 				</view>
 			</view>
 			<view class="content">{{ shareDetail.content }}</view>
 			<view class="accessory">
 				<image src="../../static/images/icon-pdf.png" mode="widthFix"></image>
-				<text>{{ shareDetail.accessoryName }}.{{ shareDetail.accessoryType }}</text>
+				<text>{{ shareDetail.fileName }}</text>
 				<view class="text-primary">下载</view>
 			</view>
 		</view>
@@ -30,72 +30,98 @@
 				<text>为你推荐</text>
 			</view>
 
-			<view class="item" v-for="(item, index) in recommendList" :key="index">
-				<image :src="item.poster"></image>
+			<navigator open-type="redirect" :url="'../share/shareDetail?id=' + item.id" class="item" v-for="(item, index) in recommendList" :key="index">
+				<image :src="item.img" v-if="item.img"></image>
 				<view class="msg">
 					<view class="title">{{ item.title }}</view>
 					<view class="d-flex justify-content-between">
 						<view class="userMsg">
-							<image :src="item.userAvatar"></image>
-							<text class="text-truncate">{{ item.userName }}</text>
+							<image :src="item.member.avatarurl"></image>
+							<text class="text-truncate">{{ item.member.nickname }}</text>
 						</view>
 						<view class="readMsg">
 							<image src="../../static/images/icon-fire.png" mode="widthFix"></image>
-							<text>{{ item.num }}</text>
+							<text>{{ item.num | readerNum }}</text>
 							<text>万人围观</text>
 						</view>
 					</view>
 				</view>
 				<view class="across"></view>
-			</view>
+			</navigator>
 		</view>
 	</view>
 </template>
 
 <script>
+import * as shareApi from '@/api/share';
 export default {
 	data() {
 		return {
 			// 分享详情
-			shareDetail: {
-				poster: 'https://s1.ax1x.com/2020/10/12/023Tg0.jpg',
-				title: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
-				content: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
-				accessoryName: '饮中八仙歌',
-				accessoryLink: 'https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf',
-				accessoryType: 'pdf',
-				userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxpxU.jpg',
-				userName: '法外狂徒张三',
-				num: 66.66
-			},
+			shareDetail: {},
 			// 推荐列表
-			recommendList: [
-				{
-					id: 1,
-					poster: 'https://s1.ax1x.com/2020/10/12/023Tg0.jpg',
-					title: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxpxU.jpg',
-					userName: '法外狂徒张三',
-					num: 66.66
-				},
-				{
-					id: 2,
-					poster: 'https://s1.ax1x.com/2020/10/12/023Tg0.jpg',
-					title: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxpxU.jpg',
-					userName: '爱美妆的木子萌爱美妆的木子萌',
-					num: 23.33
-				},
-				{
-					id: 3,
-					poster: 'https://s1.ax1x.com/2020/10/12/023Tg0.jpg',
-					title: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxpxU.jpg',
-					userName: '法外狂徒张三',
-					num: 88.88
-				}
-			]
+			recommendList: []
 		};
+	},
+	filters: {
+		// 围观人数
+		readerNum(value) {
+			if (!value) {
+				return 0;
+			}
+
+			return (value / 10000).toFixed(1);
+		},
+		// 分享时间
+		shareTime(value) {
+			if (!value) {
+				return '保密';
+			}
+
+			let date = new Date(value * 1000);
+			let year = date.getFullYear();
+			let month = (date.getMonth() + 1).toString().padStart(2, '0');
+			let day = date.getDate();
+			let hour = date
+				.getHours()
+				.toString()
+				.padStart(2, '0');
+			let minute = date
+				.getMinutes()
+				.toString()
+				.padStart(2, '0');
+			let second = date
+				.getSeconds()
+				.toString()
+				.padStart(2, '0');
+			return `${year}年${month}月${day}日 ${hour}:${minute}:${second}`;
+		}
+	},
+	methods: {
+		// 获取分享详情
+		async fetchShareDetail(id) {
+			let data = { id: parseInt(id) };
+			let res = await shareApi.fetchShareDetail(data);
+			if (res.code !== 200) {
+				return false;
+			}
+
+			this.shareDetail = res.data;
+		},
+		// 获取分享推荐
+		async fetchShareRecommend() {
+			let data = { userid: 2 };
+			let res = await shareApi.fetchShareRecommend(data);
+			if (res.code !== 200) {
+				return false;
+			}
+
+			this.recommendList = res.data;
+		}
+	},
+	onLoad(e) {
+		this.fetchShareDetail(e.id); // 获取分享详情
+		this.fetchShareRecommend(); // 获取分享推荐
 	}
 };
 </script>

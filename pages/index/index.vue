@@ -1,8 +1,8 @@
 <template>
 	<view class="index">
 		<!-- banner -->
-		<swiper class="banner" autoplay circular>
-			<swiper-item v-for="(item, index) in bannerList" :key="index"><image :src="item" mode="widthFix"></image></swiper-item>
+		<swiper class="banner" autoplay circular v-if="bannerList.length > 0">
+			<swiper-item v-for="(item, index) in bannerList" :key="index"><image :src="item.path | bannerImg" mode="widthFix"></image></swiper-item>
 		</swiper>
 
 		<!-- 热门分享 -->
@@ -12,21 +12,25 @@
 					<view></view>
 					<text>热门分享</text>
 				</view>
-				<navigator url="../share/fieryShare">查看更多 ></navigator>
+				<navigator open-type="redirect" url="../share/fieryShare?lx=''">查看更多 ></navigator>
 			</view>
 
-			<scroll-view class="shareList" scroll-x>
-				<navigator url="../share/shareDetail" class="item" v-for="(item, index) in fieryShareList" :key="index">
-					<image :src="item.poster" mode="widthFix"></image>
+			<view class="default" v-if="fieryShareList.length === 0">
+				<image src="../../static/images/ikon-planet.png" mode="widthFix"></image>
+				<text>暂无分享</text>
+			</view>
+			<scroll-view class="shareList" scroll-x v-else>
+				<navigator open-type="redirect" :url="'../share/shareDetail?id=' + item.id" class="item" v-for="(item, index) in fieryShareList" :key="index">
+					<image :src="item.img" mode="widthFix"></image>
 					<view class="title">{{ item.title }}</view>
 					<view class="msg">
 						<view class="userMsg">
-							<image :src="item.userAvatar"></image>
-							<text class="text-truncate">{{ item.userName }}</text>
+							<image :src="item.member.avatarurl"></image>
+							<text class="text-truncate">{{ item.member.nickname }}</text>
 						</view>
 						<view class="readMsg">
 							<image src="../../static/images/icon-fire.png" mode="widthFix"></image>
-							<text>{{ item.num }}</text>
+							<text>{{ item.num | readerNum }}</text>
 							<text>万人围观</text>
 						</view>
 					</view>
@@ -41,27 +45,33 @@
 				<text>最新分享</text>
 			</view>
 
-			<view class="item" v-for="(item, index) in newShareList" :key="index">
-				<navigator url="../user/userHome" class="userMsg">
-					<image :src="item.userAvatar"></image>
-					<view>
-						<view class="userName">{{ item.userName }}</view>
-						<view>{{ item.createTime }}</view>
-					</view>
-				</navigator>
-				<navigator url="../share/fieryShare" class="classify">#生活小常识#</navigator>
-				<navigator url="../share/shareDetail" class="content">
-					<view class="title">{{ item.title }}</view>
-					<view class="accessory">
-						<image src="../../static/images/icon-pdf.png" mode="widthFix"></image>
-						<text>{{ item.accessoryName }}.{{ item.accessoryType }}</text>
-					</view>
-					<view class="readMsg">
-						<image src="../../static/images/icon-fire.png" mode="widthFix"></image>
-						<text>{{ item.num }}万人围观</text>
-					</view>
-				</navigator>
+			<view class="default" v-if="newShareList.length === 0">
+				<image src="../../static/images/ikon-planet.png" mode="widthFix"></image>
+				<text>暂无分享</text>
 			</view>
+			<template v-else>
+				<view class="item" v-for="(item, index) in newShareList" :key="index">
+					<navigator open-type="redirect" :url="'../user/userHome?userid=' + item.member.id" class="userMsg">
+						<image :src="item.member.avatarurl"></image>
+						<view>
+							<view class="userName">{{ item.member.nickname }}</view>
+							<view>{{ item.create_time | shareTime }}</view>
+						</view>
+					</navigator>
+					<navigator open-type="redirect" :url="'../share/fieryShare?lx=' + item.classfiy.id + '&title=' + item.classfiy.name" class="classify">#{{ item.classfiy.name }}#</navigator>
+					<navigator open-type="redirect" :url="'../share/shareDetail?id=' + item.id" class="content">
+						<view class="title">{{ item.title }}</view>
+						<view class="accessory">
+							<image src="../../static/images/icon-pdf.png" mode="widthFix"></image>
+							<text>{{ item.fileName }}</text>
+						</view>
+						<view class="readMsg">
+							<image src="../../static/images/icon-fire.png" mode="widthFix"></image>
+							<text>{{ item.num | readerNum }}万人围观</text>
+						</view>
+					</navigator>
+				</view>
+			</template>
 		</view>
 
 		<!-- 导航栏 -->
@@ -85,105 +95,101 @@ export default {
 	data() {
 		return {
 			// banner
-			bannerList: ['https://s1.ax1x.com/2020/10/12/021ymF.png', 'https://s1.ax1x.com/2020/10/12/021ymF.png'],
+			bannerList: [],
 			// 最热分享
-			fieryShareList: [
-				{
-					id: 1,
-					poster: 'https://s1.ax1x.com/2020/10/12/023Tg0.jpg',
-					title: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxpxU.jpg',
-					userName: '法外狂徒张三',
-					num: 66.66
-				},
-				{
-					id: 2,
-					poster: 'https://s1.ax1x.com/2020/10/12/023Tg0.jpg',
-					title: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxpxU.jpg',
-					userName: '爱美妆的木子萌爱美妆的木子萌',
-					num: 23.33
-				},
-				{
-					id: 3,
-					poster: 'https://s1.ax1x.com/2020/10/12/023Tg0.jpg',
-					title: '李白一斗诗百篇，长安市上酒家眠。天子呼来不上船，自称臣是酒中仙。',
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxpxU.jpg',
-					userName: '法外狂徒张三',
-					num: 88.88
-				}
-			],
+			fieryShareList: [],
 			// 最新分享
-			newShareList: [
-				{
-					id: 1,
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxdsg.jpg',
-					userName: '杜甫',
-					title: '《饮中八仙歌》',
-					accessoryName: '饮中八仙歌',
-					accessoryLink: 'https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf',
-					accessoryType: 'pdf',
-					createTime: '2020-10-09 12:30',
-					num: 66.66
-				},
-				{
-					id: 2,
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxdsg.jpg',
-					userName: '啦啦',
-					title: '《饮中八仙歌》',
-					accessoryName: '饮中八仙歌',
-					accessoryLink: 'https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf',
-					accessoryType: 'pdf',
-					createTime: '2020-10-09 12:30',
-					num: 66.66
-				},
-				{
-					id: 3,
-					userAvatar: 'https://s1.ax1x.com/2020/10/11/0cxdsg.jpg',
-					userName: '张三',
-					title: '《饮中八仙歌》',
-					accessoryName: '饮中八仙歌',
-					accessoryLink: 'https://code.visualstudio.com/shortcuts/keyboard-shortcuts-windows.pdf',
-					accessoryType: 'pdf',
-					createTime: '2020-10-09 12:30',
-					num: 66.66
-				}
-			]
+			newShareList: []
 		};
+	},
+	filters: {
+		// banner
+		bannerImg(value) {
+			if (!value) {
+				return 'https://s1.ax1x.com/2020/10/12/021ymF.png';
+			}
+
+			return `https://dyxcx.waszn.com/${value}`;
+		},
+		// 围观人数
+		readerNum(value) {
+			if (!value) {
+				return 0;
+			}
+
+			return (value / 10000).toFixed(1);
+		},
+		// 分享时间
+		shareTime(value) {
+			if (!value) {
+				return '保密';
+			}
+
+			let date = new Date(value * 1000);
+			let year = date.getFullYear();
+			let month = (date.getMonth() + 1).toString().padStart(2, '0');
+			let day = date.getDate();
+			let hour = date
+				.getHours()
+				.toString()
+				.padStart(2, '0');
+			let minute = date
+				.getMinutes()
+				.toString()
+				.padStart(2, '0');
+			let second = date
+				.getSeconds()
+				.toString()
+				.padStart(2, '0');
+			return `${year}年${month}月${day}日 ${hour}:${minute}:${second}`;
+		}
 	},
 	methods: {
 		// 获取banner
-		fetchBanner() {
-			indexApi
-				.fetchBanner()
-				.then(res => {
-					this.bannerList = res.data.list;
-				})
-				.catch(() => {});
+		async fetchBanner() {
+			let res = await indexApi.fetchBanner();
+			if (res.code !== 200) {
+				return false;
+			}
+			this.bannerList = res.data;
 		},
 		// 获取最热分享
-		fetchFieryShare() {
-			indexApi
-				.fetchFieryShare()
-				.then(res => {
-					this.fieryShareList = res.data.list;
-				})
-				.catch(() => {});
+		async fetchFieryShare() {
+			let data = {
+				status: '',
+				page: 1,
+				limit: 10,
+				isZr: 1,
+				lx: '',
+				userid: ''
+			};
+			let res = await indexApi.fetchShareList(data);
+			if (res.code !== 200) {
+				return false;
+			}
+			this.fieryShareList = res.data[0].data;
 		},
 		// 获取最新分享
-		fetchNewShare() {
-			indexApi
-				.fetchNewShare()
-				.then(res => {
-					this.newShareList = res.data.list;
-				})
-				.catch(() => {});
+		async fetchNewShare() {
+			let data = {
+				status: '',
+				page: 1,
+				limit: 10,
+				isZr: 0,
+				lx: '',
+				userid: ''
+			};
+			let res = await indexApi.fetchShareList(data);
+			if (res.code !== 200) {
+				return false;
+			}
+			this.newShareList = res.data[0].data;
 		}
 	},
 	onReady() {
-		// this.fetchBanner(); // 获取banner
-		// this.fetchFieryShare(); // 获取最热分享
-		// this.fetchNewShare(); // 获取最新分享
+		this.fetchBanner(); // 获取banner
+		this.fetchFieryShare(); // 获取最热分享
+		this.fetchNewShare(); // 获取最新分享
 	}
 };
 </script>
@@ -203,9 +209,12 @@ export default {
 	}
 	/* 热门分享 */
 	.fieryShare {
+		display: flex;
+		flex-flow: column nowrap;
 		margin: 40rpx auto;
 		padding: 20rpx 0 0 20rpx;
 		width: 690rpx;
+		min-height: 600rpx;
 		background-color: #fff;
 		border-radius: 10rpx;
 		.hd {
@@ -281,6 +290,9 @@ export default {
 	}
 	/* 最新分享 */
 	.newShare {
+		display: flex;
+		flex-flow: column nowrap;
+		min-height: 600rpx;
 		> .title {
 			display: flex;
 			align-items: center;

@@ -27,18 +27,6 @@
 			}
 		},
 		{
-			"path": "pages/liveSense/liveSense",
-			"style": {
-				"navigationBarTitleText": "生活常识"
-			}
-		},
-		{
-			"path": "pages/liveSense/liveSenseDetail",
-			"style": {
-				"navigationBarTitleText": "常识详情"
-			}
-		},
-		{
 			"path": "pages/user/user",
 			"style": {
 				"navigationBarTitleText": "我的"

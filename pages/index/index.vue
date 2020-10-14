@@ -49,7 +49,7 @@
 						<view>{{ item.createTime }}</view>
 					</view>
 				</navigator>
-				<navigator url="../liveSense/liveSense" class="classify">#生活小常识#</navigator>
+				<navigator url="../share/fieryShare" class="classify">#生活小常识#</navigator>
 				<navigator url="../share/shareDetail" class="content">
 					<view class="title">{{ item.title }}</view>
 					<view class="accessory">
@@ -180,7 +180,7 @@ export default {
 				.catch(() => {});
 		}
 	},
-	onShow() {
+	onReady() {
 		// this.fetchBanner(); // 获取banner
 		// this.fetchFieryShare(); // 获取最热分享
 		// this.fetchNewShare(); // 获取最新分享

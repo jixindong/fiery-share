@@ -19,7 +19,7 @@
 						<view>{{ item.createTime }}</view>
 					</view>
 				</view>
-				<navigator url="../liveSense/liveSense" class="classify">#生活小常识#</navigator>
+				<navigator url="../share/fieryShare" class="classify">#生活小常识#</navigator>
 				<navigator url="../share/shareDetail" class="content">
 					<view class="title">{{ item.title }}</view>
 					<view class="accessory">

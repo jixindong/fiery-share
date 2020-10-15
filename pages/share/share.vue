@@ -107,9 +107,9 @@ export default {
 	padding: 20rpx;
 	.shareForm {
 		.type {
-			margin-left: auto;
 			color: #999;
 			font-size: 24rpx;
+			text-align: right;
 			image {
 				margin-left: 20rpx;
 				width: 20rpx;

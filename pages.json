@@ -36,13 +36,15 @@
 		{
 			"path": "pages/user/userHome",
 			"style": {
-				"navigationBarTitleText": "我的主页"
+				"navigationBarTitleText": "我的主页",
+				"enablePullDownRefresh":true
 			}
 		},
 		{
 			"path": "pages/user/userShare",
 			"style": {
-				"navigationBarTitleText": "我的分享"
+				"navigationBarTitleText": "我的分享",
+				"enablePullDownRefresh":true
 			}
 		},
 		{

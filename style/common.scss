@@ -34,17 +34,18 @@ page {
 	left: 0;
 	display: flex;
 	justify-content: space-around;
+	align-items: flex-start;
 	width: 750rpx;
-	height: 140rpx;
+	height: 130rpx;
 	background-color: #fff;
 	box-shadow: 0 6rpx 12rpx rgba(0, 0, 0, 0.4);
 	.item {
 		display: flex;
 		flex-flow: column nowrap;
 		align-items: center;
-		padding-top: 10rpx;
+		padding: 20rpx 40rpx;
 		color: #666;
-		font-size: 18rpx;
+		font-size: 24rpx;
 		&.active {
 			color: #348bf6;
 		}
@@ -66,7 +67,7 @@ page {
 	}
 }
 // 缺省
-.default{
+.default {
 	flex: 1;
 	display: flex;
 	flex-flow: column nowrap;
@@ -75,7 +76,7 @@ page {
 	color: #999;
 	font-size: 26rpx;
 	background-color: #fff;
-	image{
+	image {
 		margin-bottom: 20rpx;
 		width: 150rpx;
 	}

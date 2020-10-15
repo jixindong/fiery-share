@@ -2,20 +2,20 @@
 	<view class="user">
 		<!-- 用户信息 -->
 		<view class="userMsg">
-			<image src="https://s1.ax1x.com/2020/10/12/02rrX4.jpg" mode="widthFix" class="avatarBgi"></image>
+			<image :src="userMsg.avatarurl || '../../static/images/avatar.png'" mode="widthFix" class="avatarBgi"></image>
 			<view class="msg">
-				<image src="https://s1.ax1x.com/2020/10/12/02rrX4.jpg" class="avatar" @click="navigateToUserHome"></image>
-				<text>爱美妆的木子萌</text>
+				<image :src="userMsg.avatarurl || '../../static/images/avatar.png'" class="avatar" @click="navigateToUserHome"></image>
+				<text>{{ userMsg.nickname || '用户昵称' }}</text>
 				<view class="shareLevel">
 					<image src="../../static/images/icon-medal.png" mode="widthFix"></image>
-					<text>初级分享</text>
+					<text>{{ userMsg.msg || '初级分享' }}</text>
 				</view>
 			</view>
 		</view>
 
 		<!-- 功能列表 -->
 		<view class="functionList">
-			<navigator url="./userShare" class="item">
+			<navigator :url="'./userShare?userid=' + userid" class="item">
 				<image src="../../static/images/icon-share.png" mode="widthFix"></image>
 				<text>我的分享</text>
 				<image src="../../static/images/icon-arrow-right.png" mode="widthFix" class="arrow"></image>
@@ -48,19 +48,36 @@
 </template>
 
 <script>
+import { fetchUserDetail } from '@/api/user';
 export default {
 	data() {
-		return {};
+		return {
+			// 用户id
+			userid: 1,
+			// 用户信息
+			userMsg: ''
+		};
 	},
 	methods: {
+		// 获取用户详情
+		async getUserDetail() {
+			let res = await fetchUserDetail({ userid: this.userid });
+			if (res.code !== 200) {
+				return false;
+			}
+
+			this.userMsg = res.data[0];
+		},
 		// 跳转用户主页
 		navigateToUserHome() {
 			uni.navigateTo({
-				url: './userHome'
+				url: `./userHome?userid=${this.userid}`
 			});
 		}
 	},
-	onReady() {}
+	onReady() {
+		this.getUserDetail(); // 获取用户详情
+	}
 };
 </script>
 

@@ -1,12 +1,17 @@
 <template>
 	<view class="fieryShare">
+		<view class="default" v-if="fieryShareList.length === 0">
+			<image src="../../static/images/ikon-planet.png" mode="widthFix"></image>
+			<text>暂无分享</text>
+		</view>
+		
 		<navigator open-type="redirect" :url="'./shareDetail?id=' + item.id" class="item" v-for="(item, index) in fieryShareList" :key="index">
 			<image :src="item.img" v-if="item.img"></image>
 			<view class="msg">
 				<view class="title">{{ item.title }}</view>
 				<view class="d-flex justify-content-between">
 					<view class="userMsg">
-						<image :src="item.member.avatarurl"></image>
+						<image :src="item.member.avatarurl || '../../static/images/avatar.png'"></image>
 						<text class="text-truncate">{{ item.member.nickname }}</text>
 					</view>
 					<view class="readMsg">
@@ -18,7 +23,7 @@
 			</view>
 			<view class="across"></view>
 		</navigator>
-		<view class="my-3"><u-loadmore :status="loadmore"/></view>
+		<view class="my-3" v-if="fieryShareList.length !== 0"><u-loadmore :status="loadmore"/></view>
 	</view>
 </template>
 
@@ -29,21 +34,18 @@ export default {
 		return {
 			// 分享列表
 			fieryShareList: [],
+			// 分享列表分页
+			fieryShareListPage:{
+				total: 1,
+				pageSize: 10,
+				totalPage: 1,
+				currentPage: 1
+			},
 			// 搜索
 			searchData:{lx:''},
 			// 加载更多
 			loadmore:'loadmore'
 		};
-	},
-	filters:{
-		// 围观人数
-		readerNum(value) {
-			if (!value) {
-				return 0;
-			}
-		
-			return (value / 10000).toFixed(1);
-		}
 	},
 	methods:{
 		// 设置页面title
@@ -60,8 +62,8 @@ export default {
 		async getShareList(){
 			let data = {
 				status: '',
-				page: 1,
-				limit: 10,
+				page: this.fieryShareListPage.currentPage,
+				limit: this.fieryShareListPage.pageSize,
 				isZr: 0,
 				lx:this.searchData.lx,
 				userid: ''
@@ -71,19 +73,31 @@ export default {
 				return false;
 			}
 			
-			this.fieryShareList = res.data[0].data;
+			this.fieryShareList = [...this.fieryShareList,...res.data[0].data];
+			this.handleShareListPage(res.data[0].count);// 设置分享列表分页
 		},
-		// 下拉加载更多
-		pullDownMore(){
-			this.loadmore = 'loading';
+		// 设置分享列表分页
+		handleShareListPage(count){
+			let total = count ? count : 1;
+			this.fieryShareListPage.totalPage = Math.ceil(total / this.fieryShareListPage.pageSize);
 		}
 	},
+	// 下拉刷新
 	onPullDownRefresh() {
+		this.fieryShareList = [];
 		this.getShareList();// 获取分享列表
 		uni.stopPullDownRefresh();
 	},
+	// 上拉加载更多
 	onReachBottom() {
-		
+		this.loadmore = 'loading';
+		if(this.fieryShareListPage.currentPage < this.fieryShareListPage.totalPage){
+			this.loadmore = 'loadmore';
+			this.fieryShareListPage.currentPage = this.fieryShareListPage.currentPage + 1;
+			this.getShareList();// 获取分享列表
+		}else{
+			this.loadmore = 'nomore';
+		}
 	},
 	onLoad(e) {
 		this.handlePageTitle(e.title);// 设置页面title
@@ -95,6 +109,9 @@ export default {
 
 <style lang="scss" scoped>
 .fieryShare{
+	display: flex;
+	flex-flow: column nowrap;
+	min-height: 100vh;
 	.item {
 		position: relative;
 		display: flex;

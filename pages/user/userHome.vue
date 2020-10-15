@@ -2,63 +2,130 @@
 	<view class="userHome">
 		<!-- 用户信息 -->
 		<view class="userMsg">
-			<image src="https://s1.ax1x.com/2020/10/12/02rrX4.jpg" mode="widthFix" class="avatarBgi"></image>
+			<image :src="userMsg.avatarurl || '../../static/images/avatar.png'" mode="widthFix" class="avatarBgi"></image>
 			<view class="msg">
-				<image src="https://s1.ax1x.com/2020/10/12/02rrX4.jpg" class="avatar" @click="navigateToUserHome"></image>
-				<text>爱美妆的木子萌</text>
+				<image :src="userMsg.avatarurl || '../../static/images/avatar.png'" class="avatar"></image>
+				<text>{{ userMsg.nickname || '用户昵称' }}</text>
 			</view>
 		</view>
 
 		<!-- 分享列表 -->
 		<view class="shareList">
+			<view class="default" v-if="userShareList.length === 0">
+				<image src="../../static/images/ikon-planet.png" mode="widthFix"></image>
+				<text>暂无分享</text>
+			</view>
 			<view class="item" v-for="(item, index) in userShareList" :key="index">
 				<view class="userMsg">
-					<image :src="item.userAvatar"></image>
+					<image :src="item.member.avatarurl || '../../static/images/avatar.png'"></image>
 					<view>
-						<view class="userName">{{ item.userName }}</view>
-						<view>{{ item.createTime }}</view>
+						<view class="userName">{{ item.member.nickname }}</view>
+						<view>{{ item.create_time | shareTime }}</view>
 					</view>
 				</view>
-				<navigator url="../share/fieryShare" class="classify">#生活小常识#</navigator>
-				<navigator url="../share/shareDetail" class="content">
+				<navigator open-type="redirect" :url="'../share/fieryShare?userid=' + item.member.id" class="classify">#{{ item.classfiy.name }}#</navigator>
+				<navigator open-type="redirect" :url="'../share/shareDetail?id=' + item.id" class="content">
 					<view class="title">{{ item.title }}</view>
 					<view class="accessory">
 						<image src="../../static/images/icon-pdf.png" mode="widthFix"></image>
-						<text>{{ item.accessoryName }}.{{ item.accessoryType }}</text>
+						<text>{{ item.fileName }}</text>
 					</view>
 					<view class="readMsg">
 						<image src="../../static/images/icon-fire.png" mode="widthFix"></image>
-						<text>{{ item.num }}万人围观</text>
+						<text>{{ item.num | readerNum }}万人围观</text>
 					</view>
 				</navigator>
 				<view class="across"></view>
 			</view>
+			<view class="my-3" v-if="userShareList.length !== 0"><u-loadmore :status="loadmore" /></view>
 		</view>
 	</view>
 </template>
 
 <script>
-import * as userApi from '@/api/user';
+import { fetchShareList } from '@/api/index';
+import { fetchUserDetail } from '@/api/user';
 export default {
 	data() {
 		return {
+			// 用户id
+			userid: '',
+			// 用户信息
+			userMsg: '',
 			// 用户分享列表
-			userShareList: []
+			userShareList: [],
+			// 用户分享列表分页
+			userShareListPage: {
+				total: 1,
+				pageSize: 10,
+				totalPage: 1,
+				currentPage: 1
+			},
+			// 加载更多
+			loadmore: 'loadmore'
 		};
 	},
-	methods:{
+	methods: {
+		// 设置用户id
+		handleUserId(userid) {
+			if (userid) {
+				this.userid = userid;
+			}
+		},
 		// 获取用户详情
-		async fetchUserDetail(userid){
-			let res = await userApi.fetchUserDetail({userid:userid});
-			if(res.code !== 200){
+		async getUserDetail() {
+			let res = await fetchUserDetail({ userid: this.userid });
+			if (res.code !== 200) {
 				return false;
 			}
-			
-			this.userShareList = res.data;
+
+			this.userMsg = res.data[0];
+		},
+		// 获取用户分享列表
+		async getShareList() {
+			let data = {
+				status: '',
+				page: this.userShareListPage.currentPage,
+				limit: this.userShareListPage.pageSize,
+				isZr: 0,
+				lx: '',
+				userid: this.userid
+			};
+			let res = await fetchShareList(data);
+			if (res.code !== 200) {
+				return false;
+			}
+
+			this.userShareList = [...this.userShareList, ...res.data[0].data];
+			this.handleShareListPage(res.data[0].count); // 设置用户分享列表分页
+		},
+		// 设置用户分享列表分页
+		handleShareListPage(count) {
+			let total = count ? count : 1;
+			this.userShareListPage.totalPage = Math.ceil(total / this.userShareListPage.pageSize);
+		}
+	},
+	// 下拉刷新
+	onPullDownRefresh() {
+		this.userShareList = [];
+		this.getShareList(); // 获取用户分享列表
+		uni.stopPullDownRefresh();
+	},
+	// 上拉加载更多
+	onReachBottom() {
+		this.loadmore = 'loading';
+		if (this.userShareListPage.currentPage < this.userShareListPage.totalPage) {
+			this.loadmore = 'loadmore';
+			this.userShareListPage.currentPage = this.userShareListPage.currentPage + 1;
+			this.getShareList(); // 获取用户分享列表
+		} else {
+			this.loadmore = 'nomore';
 		}
 	},
 	onLoad(e) {
-		this.fetchUserDetail(e.userid);// 获取用户详情
+		this.handleUserId(e.userid); // 设置用户id
+		this.getUserDetail(); // 获取用户详情
+		this.getShareList(); // 获取用户分享列表
 	}
 };
 </script>
@@ -101,8 +168,11 @@ export default {
 	/* 分享列表 */
 	.shareList {
 		position: relative;
-		top: -30rpx;
+		top: -20rpx;
+		display: flex;
+		flex-flow: column nowrap;
 		padding-top: 20rpx;
+		min-height: 660rpx;
 		background-color: #fff;
 		border-radius: 20rpx 20rpx 0 0;
 		.item {

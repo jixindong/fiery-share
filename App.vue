@@ -1,14 +1,17 @@
 <script>
 export default {
-	onLaunch: function() {
-		console.log('App Launch');
+	onLaunch() {
+		// #ifdef MP-TOUTIAO
+		uni.login({
+			provider: 'toutiao',
+			success: res => {
+				uni.setStorageSync('code', res.code);
+			}
+		});
+		// #endif
 	},
-	onShow: function() {
-		console.log('App Show');
-	},
-	onHide: function() {
-		console.log('App Hide');
-	}
+	onShow() {},
+	onHide() {}
 };
 </script>
 

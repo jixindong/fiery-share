@@ -15,7 +15,7 @@
 
 		<!-- 功能列表 -->
 		<view class="functionList">
-			<navigator :url="'./userShare?userid=' + userid" class="item">
+			<navigator :url="'./userShare?userid=' + userid" class="item" v-if="userid">
 				<image src="../../static/images/icon-share.png" mode="widthFix"></image>
 				<text>我的分享</text>
 				<image src="../../static/images/icon-arrow-right.png" mode="widthFix" class="arrow"></image>
@@ -31,6 +31,8 @@
 				<image src="../../static/images/icon-arrow-right.png" mode="widthFix" class="arrow"></image>
 			</navigator>
 		</view>
+
+		<view class="loginBtn" v-if="!userid"><u-button type="primary" size="medium" ripple @click="userAccredit">授权登录</u-button></view>
 
 		<!-- 导航栏 -->
 		<view class="tabBar">
@@ -53,9 +55,10 @@ export default {
 	data() {
 		return {
 			// 用户id
-			userid: 1,
+			userid: '',
 			// 用户信息
-			userMsg: ''
+			userMsg: '',
+			userInfo: ''
 		};
 	},
 	methods: {
@@ -73,10 +76,70 @@ export default {
 			uni.navigateTo({
 				url: `./userHome?userid=${this.userid}`
 			});
+		},
+		// 授权登录
+		userAccredit() {
+			// #ifdef MP-TOUTIAO
+			uni.getUserInfo({
+				provider: 'toutiao',
+				success: res => {
+					this.userInfo = res.userInfo;
+					this.fetchUserId(); // 获取用户id
+				}
+			});
+			// #endif
+		},
+		// 获取用户id
+		async fetchUserId() {
+			let code = uni.getStorageSync('code');
+			let res = await uni.request({
+				url: 'https://open.douyin.com/fx/getSessionKey',
+				method: 'GET',
+				header: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					jsCode: code,
+					appCode: '1',
+					channelId: '6'
+				}
+			});
+			if (res.code !== 200) {
+				return false;
+			}
+
+			uni.setStorageSync('userid', res.data);
+			this.userid = res.data;
+			this.uploadUserInfo(); // 上传用户信息
+		},
+		// 上传用户信息
+		async uploadUserInfo() {
+			let res = await uni.request({
+				url: 'https://open.douyin.com/fx/saveUserInfo',
+				method: 'POST',
+				header: {
+					'Content-Type': 'application/json'
+				},
+				data: {
+					appCode: '1',
+					channelId: '6',
+					sessionKey: this.userid,
+					userinfo: this.userInfo
+				}
+			});
+			if (res.code !== 200) {
+				return uni.showToast({
+					title: res.msg,
+					icon: 'none'
+				});
+			}
+
+			uni.showToast({
+				title: '授权成功',
+				icon: 'success'
+			});
+			this.getUserDetail(); // 获取用户详情
 		}
-	},
-	onReady() {
-		this.getUserDetail(); // 获取用户详情
 	}
 };
 </script>
@@ -151,6 +214,11 @@ export default {
 				width: 12rpx;
 			}
 		}
+	}
+	/* 登录 */
+	.loginBtn {
+		margin-top: 200rpx;
+		text-align: center;
 	}
 }
 </style>

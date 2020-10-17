@@ -32,6 +32,7 @@
 			</navigator>
 		</view>
 
+		<!-- 授权登录 -->
 		<view class="loginBtn" v-if="!userid"><u-button type="primary" size="medium" ripple @click="userAccredit">授权登录</u-button></view>
 
 		<!-- 导航栏 -->
@@ -50,7 +51,7 @@
 </template>
 
 <script>
-import { fetchUserDetail } from '@/api/user';
+import * as userApi from '@/api/user';
 export default {
 	data() {
 		return {
@@ -62,9 +63,22 @@ export default {
 		};
 	},
 	methods: {
+		// 判断用户是否授权
+		judgeUserAccredit() {
+			let userid = uni.getStorageSync('userid');
+			if (!userid) {
+				return uni.showToast({
+					title: '请先授权',
+					icon: 'none'
+				});
+			}
+
+			this.userid = userid;
+			this.getUserDetail(); // 获取用户详情
+		},
 		// 获取用户详情
 		async getUserDetail() {
-			let res = await fetchUserDetail({ userid: this.userid });
+			let res = await userApi.fetchUserDetail({ userid: this.userid });
 			if (res.code !== 200) {
 				return false;
 			}
@@ -91,19 +105,12 @@ export default {
 		},
 		// 获取用户id
 		async fetchUserId() {
-			let code = uni.getStorageSync('code');
-			let res = await uni.request({
-				url: 'https://open.douyin.com/fx/getSessionKey',
-				method: 'GET',
-				header: {
-					'Content-Type': 'application/json'
-				},
-				data: {
-					jsCode: code,
-					appCode: '1',
-					channelId: '6'
-				}
-			});
+			let data = {
+				jsCode: uni.getStorageSync('code'),
+				appCode: '1',
+				channelId: '9'
+			};
+			let res = await userApi.fetchUserId(data);
 			if (res.code !== 200) {
 				return false;
 			}
@@ -114,19 +121,14 @@ export default {
 		},
 		// 上传用户信息
 		async uploadUserInfo() {
-			let res = await uni.request({
-				url: 'https://open.douyin.com/fx/saveUserInfo',
-				method: 'POST',
-				header: {
-					'Content-Type': 'application/json'
-				},
-				data: {
-					appCode: '1',
-					channelId: '6',
-					sessionKey: this.userid,
-					userinfo: this.userInfo
-				}
-			});
+			let data = {
+				appCode: '1',
+				channelId: '9',
+				sessionKey: uni.getStorageSync('code'),
+				userId: this.userid,
+				userInfo: this.userInfo
+			};
+			let res = await userApi.uploadUserInfo(data);
 			if (res.code !== 200) {
 				return uni.showToast({
 					title: res.msg,
@@ -140,6 +142,9 @@ export default {
 			});
 			this.getUserDetail(); // 获取用户详情
 		}
+	},
+	onReady() {
+		this.judgeUserAccredit(); // 判断用户是否授权
 	}
 };
 </script>
@@ -217,7 +222,7 @@ export default {
 	}
 	/* 登录 */
 	.loginBtn {
-		margin-top: 200rpx;
+		margin: 100rpx 0 40rpx;
 		text-align: center;
 	}
 }

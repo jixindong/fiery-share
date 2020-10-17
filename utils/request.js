@@ -5,7 +5,7 @@ const request = data => {
 			url: baseURL + data.url,
 			method: data.method || 'GET',
 			header: {
-				'Content-Type': 'application/x-www-form-urlencoded'
+				'Content-Type': 'application/json'
 			},
 			data: data.data || {},
 			success: res => {

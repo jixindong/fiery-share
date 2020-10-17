@@ -110,15 +110,9 @@ export default {
 	methods: {
 		// 判断用户是否授权
 		judgeUserAccredit() {
-			let userid = uni.getStorageSync('userinfo');
+			let userid = uni.getStorageSync('userid');
 			if (!userid) {
-				uni.showToast({
-					title: '请先授权',
-					icon: 'none',
-					complete: () => {
-						uni.navigateTo({ url: '../user/user' });
-					}
-				});
+				return uni.navigateTo({ url: '../user/user' });
 			}
 		},
 		// 获取分享类型

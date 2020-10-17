@@ -23,11 +23,12 @@
 						<view>{{ item.create_time | shareTime }}</view>
 					</view>
 				</view>
-				<navigator open-type="redirect" :url="'../share/fieryShare?userid=' + item.member.id" class="classify">#{{ item.classfiy.name }}#</navigator>
-				<navigator open-type="redirect" :url="'../share/shareDetail?id=' + item.id" class="content">
+				<navigator :url="'../share/fieryShare?userid=' + item.member.id" class="classify">#{{ item.classfiy.name }}#</navigator>
+				<navigator :url="'../share/shareDetail?id=' + item.id" class="content">
 					<view class="title">{{ item.title }}</view>
 					<view class="accessory">
-						<image src="../../static/images/icon-pdf.png" mode="widthFix"></image>
+						<image src="../../static/images/icon-video.png" mode="widthFix" v-if="item.fileLx === 'video'"></image>
+						<image src="../../static/images/icon-img.png" mode="widthFix" v-else></image>
 						<text>{{ item.fileName }}</text>
 					</view>
 					<view class="readMsg">
@@ -37,7 +38,7 @@
 				</navigator>
 				<view class="across"></view>
 			</view>
-			<view class="my-3" v-if="userShareList.length !== 0"><u-loadmore :status="loadmore" /></view>
+			<view class="my-3" v-if="userShareList.length > 10"><u-loadmore :status="loadmore" /></view>
 		</view>
 	</view>
 </template>
@@ -80,6 +81,7 @@ export default {
 			}
 
 			this.userMsg = res.data[0];
+			uni.setNavigationBarTitle({title:res.data[0].nickname});
 		},
 		// 获取用户分享列表
 		async getShareList() {

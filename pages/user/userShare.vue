@@ -25,7 +25,7 @@
 							<image src="../../static/images/ikon-planet.png" mode="widthFix"></image>
 							<text>暂无分享</text>
 						</view>
-						<navigator open-type="redirect" :url="'../share/shareDetail?id=' + v.id" class="item" v-for="(v, i) in shareSuccessList" :key="i">
+						<navigator :url="'../share/shareDetail?id=' + v.id" class="item" v-for="(v, i) in shareSuccessList" :key="i">
 							<image :src="v.img" v-if="v.img"></image>
 							<view class="title">{{ v.title }}</view>
 							<view class="checkSign success">审核成功</view>
@@ -263,7 +263,7 @@ export default {
 .userShare {
 	display: flex;
 	flex-flow: column nowrap;
-	height: 100%;
+	height: 100vh;
 	swiper {
 		flex: 1;
 		.content {

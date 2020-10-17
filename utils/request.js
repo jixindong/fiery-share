@@ -4,7 +4,7 @@ const request = data => {
 		uni.request({
 			url: baseURL + data.url,
 			method: data.method || 'GET',
-			header: {
+			header: data.header || {
 				'Content-Type': 'application/json'
 			},
 			data: data.data || {},
@@ -17,4 +17,5 @@ const request = data => {
 		});
 	});
 };
+
 export default request;

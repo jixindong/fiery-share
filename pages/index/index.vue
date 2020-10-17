@@ -12,7 +12,7 @@
 					<view></view>
 					<text>热门分享</text>
 				</view>
-				<navigator open-type="redirect" url="../share/fieryShare?lx=''">查看更多 ></navigator>
+				<navigator url="../share/fieryShare?lx=''">查看更多 ></navigator>
 			</view>
 
 			<view class="default" v-if="fieryShareList.length === 0">
@@ -20,7 +20,7 @@
 				<text>暂无分享</text>
 			</view>
 			<scroll-view class="shareList" scroll-x v-else>
-				<navigator open-type="redirect" :url="'../share/shareDetail?id=' + item.id" class="item" v-for="(item, index) in fieryShareList" :key="index">
+				<navigator :url="'../share/shareDetail?id=' + item.id" class="item" v-for="(item, index) in fieryShareList" :key="index">
 					<image :src="item.img" mode="widthFix"></image>
 					<view class="title">{{ item.title }}</view>
 					<view class="msg">
@@ -51,20 +51,19 @@
 			</view>
 			<template v-else>
 				<view class="item" v-for="(item, index) in newShareList" :key="index">
-					<navigator open-type="redirect" :url="'../user/userHome?userid=' + item.member.id" class="userMsg">
-						<image :src="item.member.avatarurl"></image>
+					<navigator :url="'../user/userHome?userid=' + item.member.id" class="userMsg">
+						<image :src="item.member.avatarurl || '../../static/images/avatar.png'"></image>
 						<view>
 							<view class="userName">{{ item.member.nickname }}</view>
 							<view>{{ item.create_time | shareTime }}</view>
 						</view>
 					</navigator>
-					<navigator open-type="redirect" :url="'../share/fieryShare?lx=' + item.classfiy.id + '&title=' + item.classfiy.name" class="classify">
-						#{{ item.classfiy.name }}#
-					</navigator>
-					<navigator open-type="redirect" :url="'../share/shareDetail?id=' + item.id" class="content">
+					<navigator :url="'../share/fieryShare?lx=' + item.classfiy.id + '&title=' + item.classfiy.name" class="classify">#{{ item.classfiy.name }}#</navigator>
+					<navigator :url="'../share/shareDetail?id=' + item.id" class="content">
 						<view class="title">{{ item.title }}</view>
 						<view class="accessory">
-							<image src="../../static/images/icon-pdf.png" mode="widthFix"></image>
+							<image src="../../static/images/icon-video.png" mode="widthFix" v-if="item.fileLx === 'video'"></image>
+							<image src="../../static/images/icon-img.png" mode="widthFix" v-else></image>
 							<text>{{ item.fileName }}</text>
 						</view>
 						<view class="readMsg">

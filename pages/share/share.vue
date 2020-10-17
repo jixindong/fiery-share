@@ -13,7 +13,7 @@
 			<view class="uploadPoster">
 				<view class="poster" v-if="uploadFile.poster">
 					<image :src="uploadFile.poster" mode="widthFix"></image>
-					<u-icon name="close-circle" @click="delUploadedPoster"></u-icon>
+					<view class="close"><u-icon name="close-circle" @click="delUploadedPoster"></u-icon></view>
 				</view>
 				<view class="addBtn" @click="uploadPoster" v-else>
 					<image src="../../static/images/icon-plus-2.png"></image>
@@ -59,6 +59,8 @@ import uploadFile from '@/utils/uploadFile';
 export default {
 	data() {
 		return {
+			// 用户id
+			userid: '',
 			// 分享表单
 			shareForm: {
 				type: '',
@@ -103,7 +105,8 @@ export default {
 			uploadFile: {
 				poster: '', // 封面
 				accessory: '', // 附件
-				accessoryName: '' // 附件名称
+				accessoryName: '', // 附件名称
+				accessoryType: '' // 附件类型
 			}
 		};
 	},
@@ -114,6 +117,8 @@ export default {
 			if (!userid) {
 				return uni.navigateTo({ url: '../user/user' });
 			}
+
+			this.userid = userid;
 		},
 		// 获取分享类型
 		async fetchShareClassList() {
@@ -165,15 +170,30 @@ export default {
 		},
 		// 上传附件
 		uploadAccessory() {
-			uni.chooseImage({
-				count: 1, // 上传文件数量
+			uni.showModal({
+				title: '提示',
+				content: '请选择上传文件类型',
+				confirmText: '图片',
+				cancelText: '视频',
 				success: res => {
-					let tempFilePath = res.tempFilePaths[0];
-					let filePostfix = tempFilePath.lastIndexOf('.') === -1 ? '' : tempFilePath.slice(tempFilePath.lastIndexOf('.'));
-					uploadFile(this.config, filePostfix, tempFilePath, '', res => {
-						this.uploadFile.accessory = res;
-						this.uploadFile.accessoryName = res.slice(res.lastIndexOf('/') + 1);
-						uni.hideLoading();
+					if (res.confirm) {
+						this.uploadFile.accessoryType = 'image';
+					} else {
+						this.uploadFile.accessoryType = 'video';
+					}
+				},
+				complete: () => {
+					uni.chooseImage({
+						count: 1, // 上传文件数量
+						success: res => {
+							let tempFilePath = res.tempFilePaths[0];
+							let filePostfix = tempFilePath.lastIndexOf('.') === -1 ? '' : tempFilePath.slice(tempFilePath.lastIndexOf('.'));
+							uploadFile(this.config, filePostfix, tempFilePath, '', res => {
+								this.uploadFile.accessory = res;
+								this.uploadFile.accessoryName = res.slice(res.lastIndexOf('/') + 1);
+								uni.hideLoading();
+							});
+						}
 					});
 				}
 			});
@@ -215,7 +235,8 @@ export default {
 				img: this.uploadFile.poster,
 				file: this.uploadFile.accessory,
 				fileName: this.uploadFile.accessoryName,
-				userid: 1
+				fileLx: this.uploadFile.accessoryType,
+				userid: this.userid
 			};
 			let res = await shareApi.addNewShare(data);
 			if (res.code !== 200) {
@@ -267,7 +288,7 @@ export default {
 				image {
 					width: 710rpx;
 				}
-				u-icon {
+				.close {
 					position: absolute;
 					top: -2rpx;
 					right: 6rpx;

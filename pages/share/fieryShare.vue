@@ -5,7 +5,7 @@
 			<text>暂无分享</text>
 		</view>
 		
-		<navigator open-type="redirect" :url="'./shareDetail?id=' + item.id" class="item" v-for="(item, index) in fieryShareList" :key="index">
+		<navigator :url="'./shareDetail?id=' + item.id" class="item" v-for="(item, index) in fieryShareList" :key="index">
 			<image :src="item.img" v-if="item.img"></image>
 			<view class="msg">
 				<view class="title">{{ item.title }}</view>

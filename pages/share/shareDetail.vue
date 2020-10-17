@@ -17,9 +17,10 @@
 			</view>
 			<view class="content">{{ shareDetail.content }}</view>
 			<view class="accessory">
-				<image src="../../static/images/icon-pdf.png" mode="widthFix"></image>
+				<image src="../../static/images/icon-video.png" mode="widthFix" v-if="shareDetail.fileLx === 'video'"></image>
+				<image src="../../static/images/icon-img.png" mode="widthFix" v-else></image>
 				<text>{{ shareDetail.fileName }}</text>
-				<view class="text-primary">下载</view>
+				<view class="text-primary" @click="downloadFile()">下载</view>
 			</view>
 		</view>
 
@@ -30,7 +31,7 @@
 				<text>为你推荐</text>
 			</view>
 
-			<navigator open-type="redirect" :url="'../share/shareDetail?id=' + item.id" class="item" v-for="(item, index) in recommendList" :key="index">
+			<navigator :url="'../share/shareDetail?id=' + item.id" class="item" v-for="(item, index) in recommendList" :key="index">
 				<image :src="item.img" v-if="item.img"></image>
 				<view class="msg">
 					<view class="title">{{ item.title }}</view>
@@ -58,7 +59,7 @@ export default {
 	data() {
 		return {
 			// 分享详情
-			shareDetail: {},
+			shareDetail: '',
 			// 推荐列表
 			recommendList: []
 		};
@@ -73,6 +74,12 @@ export default {
 			}
 
 			this.shareDetail = res.data;
+		},
+		// 文件下载
+		async downloadFile() {
+			let downloadFileRes = await uni.downloadFile({ url: this.shareDetail.file });
+			let saveFileRes = await uni.saveFile({ tempFilePath: downloadFileRes.tempFilePath });
+			uni.showToast({ title: '下载成功', icon: 'success' });
 		},
 		// 获取分享推荐
 		async fetchShareRecommend() {

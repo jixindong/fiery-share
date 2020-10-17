@@ -14,7 +14,10 @@
 		</view>
 
 		<!-- 授权登录 -->
-		<view class="loginBtn" v-else><u-button type="primary" size="medium" ripple @click="userAccredit">授权登录</u-button></view>
+		<view class="login" v-else>
+			<image src="../../static/images/background-image-1.jpg"></image>
+			<view class="btnBox"><u-button type="primary" size="medium" ripple @click="userAccredit">授权登录</u-button></view>
+		</view>
 
 		<!-- 功能列表 -->
 		<view class="functionList">
@@ -206,12 +209,18 @@ export default {
 		}
 	}
 	// 授权登录
-	.loginBtn {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 300rpx;
-		background-color: rgba(0, 0, 0, 0.2);
+	.login {
+		position: relative;
+		image {
+			width: 750rpx;
+			height: 420rpx;
+		}
+		.btnBox {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
 	}
 	// 功能列表
 	.functionList {

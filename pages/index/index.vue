@@ -115,7 +115,7 @@ export default {
 		// 获取最热分享
 		async fetchFieryShare() {
 			let data = {
-				status: '',
+				status: 1,
 				page: 1,
 				limit: 10,
 				isZr: 1,

@@ -81,11 +81,11 @@
 				<image src="../../static/images/icon-home-active.png" mode="widthFix"></image>
 				<text>首页</text>
 			</view>
-			<navigator url="../share/share" class="item share"><image src="../../static/images/icon-plus.png"></image></navigator>
-			<navigator url="../user/user" class="item">
+			<view class="item share" @click="navigateToShare"><image src="../../static/images/icon-plus.png"></image></view>
+			<view class="item" @click="redirectToUser">
 				<image src="../../static/images/icon-user.png" mode="widthFix"></image>
 				<text>我的</text>
-			</navigator>
+			</view>
 		</view>
 	</view>
 </template>
@@ -131,7 +131,7 @@ export default {
 		// 获取最新分享
 		async fetchNewShare() {
 			let data = {
-				status: '',
+				status: 1,
 				page: 1,
 				limit: 10,
 				isZr: 0,
@@ -143,6 +143,14 @@ export default {
 				return false;
 			}
 			this.newShareList = res.data[0].data;
+		},
+		// 跳转分享页
+		navigateToShare(){
+			uni.navigateTo({url:'../share/share'});
+		},
+		// 跳转用户页
+		redirectToUser(){
+			uni.redirectTo({url:'../user/user'});
 		}
 	},
 	onReady() {
@@ -158,7 +166,7 @@ export default {
 	padding-bottom: 160rpx;
 	min-height: 100vh;
 	background-color: #fafafa;
-	/* banner */
+	// banner
 	.banner {
 		width: 750rpx;
 		height: 352rpx;
@@ -166,7 +174,7 @@ export default {
 			width: 750rpx;
 		}
 	}
-	/* 热门分享 */
+	// 热门分享
 	.fieryShare {
 		display: flex;
 		flex-flow: column nowrap;
@@ -247,7 +255,7 @@ export default {
 			}
 		}
 	}
-	/* 最新分享 */
+	// 最新分享
 	.newShare {
 		display: flex;
 		flex-flow: column nowrap;

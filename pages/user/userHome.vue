@@ -134,7 +134,7 @@ export default {
 
 <style lang="scss" scoped>
 .userHome {
-	/* 用户信息 */
+	// 用户信息
 	> .userMsg {
 		position: relative;
 		height: 580rpx;
@@ -167,7 +167,7 @@ export default {
 			}
 		}
 	}
-	/* 分享列表 */
+	// 分享列表
 	.shareList {
 		position: relative;
 		top: -20rpx;

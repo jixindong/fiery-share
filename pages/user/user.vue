@@ -1,7 +1,7 @@
 <template>
 	<view class="user">
 		<!-- 用户信息 -->
-		<view class="userMsg">
+		<view class="userMsg" v-if="userid">
 			<image :src="userMsg.avatarurl || '../../static/images/avatar.png'" mode="widthFix" class="avatarBgi"></image>
 			<view class="msg">
 				<image :src="userMsg.avatarurl || '../../static/images/avatar.png'" class="avatar" @click="navigateToUserHome"></image>
@@ -12,6 +12,9 @@
 				</view>
 			</view>
 		</view>
+
+		<!-- 授权登录 -->
+		<view class="loginBtn" v-else><u-button type="primary" size="medium" ripple @click="userAccredit">授权登录</u-button></view>
 
 		<!-- 功能列表 -->
 		<view class="functionList">
@@ -32,16 +35,13 @@
 			</navigator>
 		</view>
 
-		<!-- 授权登录 -->
-		<view class="loginBtn" v-if="!userid"><u-button type="primary" size="medium" ripple @click="userAccredit">授权登录</u-button></view>
-
 		<!-- 导航栏 -->
 		<view class="tabBar">
-			<navigator url="../index/index" class="item">
+			<view class="item" @click="redirectToIndex">
 				<image src="../../static/images/icon-home.png" mode="widthFix"></image>
 				<text>首页</text>
-			</navigator>
-			<navigator url="../share/share" class="item share"><image src="../../static/images/icon-plus.png"></image></navigator>
+			</view>
+			<view class="item share" @click="navigateToShare"><image src="../../static/images/icon-plus.png"></image></view>
 			<view class="item active">
 				<image src="../../static/images/icon-user-active.png" mode="widthFix"></image>
 				<text>我的</text>
@@ -141,6 +141,14 @@ export default {
 				icon: 'success'
 			});
 			this.getUserDetail(); // 获取用户详情
+		},
+		// 跳转首页
+		redirectToIndex() {
+			uni.redirectTo({ url: '../index/index' });
+		},
+		// 跳转分享页
+		navigateToShare() {
+			uni.navigateTo({ url: '../share/share' });
 		}
 	},
 	onReady() {
@@ -154,7 +162,7 @@ export default {
 	padding-bottom: 160rpx;
 	min-height: 100vh;
 	background-color: #fafafa;
-	/* 用户信息 */
+	// 用户信息
 	.userMsg {
 		position: relative;
 		height: 580rpx;
@@ -197,7 +205,15 @@ export default {
 			}
 		}
 	}
-	/* 功能列表 */
+	// 授权登录
+	.loginBtn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 300rpx;
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+	// 功能列表
 	.functionList {
 		position: relative;
 		top: -30rpx;
@@ -219,11 +235,6 @@ export default {
 				width: 12rpx;
 			}
 		}
-	}
-	/* 登录 */
-	.loginBtn {
-		margin: 100rpx 0 40rpx;
-		text-align: center;
 	}
 }
 </style>

@@ -101,7 +101,7 @@ export default {
 
 <style lang="scss" scoped>
 .shareDetail {
-	/* 分享详情 */
+	// 分享详情
 	.detail {
 		padding: 20rpx 40rpx;
 		color: #999;
@@ -159,7 +159,7 @@ export default {
 			}
 		}
 	}
-	/* 推荐列表 */
+	// 推荐列表
 	.recommendList {
 		> .title {
 			display: flex;

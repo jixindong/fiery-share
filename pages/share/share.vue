@@ -115,7 +115,7 @@ export default {
 		judgeUserAccredit() {
 			let userid = uni.getStorageSync('userid');
 			if (!userid) {
-				return uni.navigateTo({ url: '../user/user' });
+				return uni.redirectTo({ url: '../user/user' });
 			}
 
 			this.userid = userid;
@@ -248,7 +248,7 @@ export default {
 				icon: 'success',
 				duration: 2000,
 				complete: () => {
-					uni.navigateTo({ url: '../index/index' });
+					uni.redirectTo({ url: '../index/index' });
 				}
 			});
 		}

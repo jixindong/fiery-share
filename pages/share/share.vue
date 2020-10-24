@@ -141,7 +141,7 @@ export default {
 			}
 
 			let { oss_url: uploadUrl, oss_key_secret: AccessKeySecret, oss_access_key: OSSAccessKeyId } = res.data[0];
-			uploadUrl = uploadUrl.slice(uploadUrl.length - 1) === '/' ? `http://${uploadUrl}` : `http://${uploadUrl}/`;
+			uploadUrl = uploadUrl.slice(uploadUrl.length - 1) === '/' ? `https://${uploadUrl}` : `http://${uploadUrl}/`;
 			this.config = { uploadUrl, AccessKeySecret, OSSAccessKeyId, timeout: 87600 };
 		},
 		// 上传封面

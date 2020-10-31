@@ -11,7 +11,7 @@
 							<text>暂无分享</text>
 						</view>
 						<view class="item" v-for="(v, i) in shareCheckList" :key="i">
-							<image :src="v.img" v-if="v.img"></image>
+							<view><image :src="v.img" mode="widthFix" v-if="v.img"></image></view>
 							<view class="title">{{ v.title }}</view>
 							<view class="checkSign check">审核中</view>
 							<view class="across"></view>
@@ -26,7 +26,7 @@
 							<text>暂无分享</text>
 						</view>
 						<navigator :url="'../share/shareDetail?id=' + v.id" class="item" v-for="(v, i) in shareSuccessList" :key="i">
-							<image :src="v.img" v-if="v.img"></image>
+							<view><image :src="v.img" mode="widthFix" v-if="v.img"></image></view>
 							<view class="title">{{ v.title }}</view>
 							<view class="checkSign success">审核成功</view>
 							<view class="across"></view>
@@ -41,7 +41,7 @@
 							<text>暂无分享</text>
 						</view>
 						<view class="item" v-for="(v, i) in shareFailedList" :key="i">
-							<image :src="v.img" v-if="v.img"></image>
+							<view><image :src="v.img" mode="widthFix" v-if="v.img"></image></view>
 							<view class="title">
 								<view>{{ v.title }}</view>
 								<view class="text-danger" v-if="v.cause">{{ v.cause }}</view>
@@ -283,15 +283,16 @@ export default {
 				}
 				image {
 					width: 160rpx;
-					height: 120rpx;
 					border-radius: 10rpx;
 				}
 				.title {
-					padding: 0 40rpx 0 20rpx;
+					flex: 1;
+					padding: 0 10rpx;
+					word-break: break-all;
 				}
 				.checkSign {
-					margin-left: auto;
-					width: 128rpx;
+					width: 130rpx;
+					text-align: right;
 					&.check {
 						color: #ffab09;
 					}
